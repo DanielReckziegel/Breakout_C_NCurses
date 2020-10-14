@@ -1,0 +1,159 @@
+#include <ncurses.h>
+#include <math.h> // for math functions
+#include <ctype.h> // for c character definitions
+#include <string.h> // for c string definitions
+#include <stdlib.h> // for standard c functions
+#include <stdbool.h> // for standard bool values
+#include <unistd.h> // for posix c functions
+#include "graphics.h"
+#include "gridfont.h"
+#include "sound.h"
+
+static int max_x = 200, max_y = 60; // screen size
+
+int main(int argc, char *argv[])
+{
+   // initialize ncurses screen
+   initscr(); // initialize the screen to contain a single window
+   curs_set(FALSE); // disable text cursor
+   noecho(); // do not echo keyboard input
+   
+   // init sound
+   if (!sound_init())
+      return(1);
+   getmaxyx(stdscr, max_y, max_x); // & not required
+     
+   // print centered grid char text
+   const char text[] = "Breakout";
+   const char rand[] = "$";
+   const char help[] = "Press q to quit!";
+   const char start[] = "Press Space to start!";
+   int tx = max_x/2;
+   int ty = max_y/2;
+   
+   init_grid_font();
+
+   // Breakout
+   draw_grid_text(ty-(max_y/3), tx - strlen(text)/2 * get_grid_char_cols(), text);
+
+   //draw setup lines
+   //links oben nach links unten
+   int i;
+   for(i = 0; i < max_y-get_grid_char_lines(); i++) {
+     init_grid_font();
+     draw_grid_text(0+i, 0, rand);
+     refresh();
+   }
+
+   // links oben nach rechts oben
+   int y;
+   for(y = 0; y < max_x-get_grid_char_cols(); y++) {
+   init_grid_font();
+   draw_grid_text(0, 0+y, rand);
+   refresh();
+   }
+
+   // rechts oben nach rechts unten
+   for(i = 0; i < max_y-get_grid_char_lines(); i++) {
+     init_grid_font();
+     draw_grid_text(0+i, max_x-(2*get_grid_char_lines()), rand);
+     refresh();
+   }
+
+   // links unten nach rechts unten
+   for(y = 0; y < max_x-get_grid_char_cols(); y++) {
+   init_grid_font();
+   draw_grid_text(max_y-(get_grid_char_cols()-1), 0+y, rand);
+   refresh();
+   }
+
+   //print start & help text
+   attrset(A_BLINK);
+   draw_grid_text(max_y-(max_y/2), tx - strlen(start)/2 * get_grid_char_cols(), start);
+   draw_grid_text(max_y-(max_y/3), tx - strlen(help)/2 * get_grid_char_cols(), help);
+   attrset(A_NORMAL);
+
+
+
+   void setup();
+   void draw();
+   refresh();
+
+   // check for pressed keys
+   while (tolower(getch()) != 'q') {}   
+
+   // exit sound
+   sound_exit();
+
+   // restore normal terminal behavior before exiting
+   endwin();
+   return(0);
+}
+
+
+
+
+
+
+//draw Methode
+/*
+void draw ()
+{
+  // print centered grid char text
+  init_grid_font();
+
+   // Breakout
+   draw_grid_text(ty-(max_y/3), tx - strlen(text)/2 * get_grid_char_cols(), text);
+
+   //draw setup lines
+   //links oben nach links unten
+   int i;
+   for(i = 0; i < max_y-get_grid_char_lines(); i++) {
+     init_grid_font();
+     draw_grid_text(0+i, 0, rand);
+     refresh();
+   }
+
+   // links oben nach rechts oben
+   int y;
+   for(y = 0; y < max_x-get_grid_char_cols(); y++) {
+   init_grid_font();
+   draw_grid_text(0, 0+y, rand);
+   refresh();
+   }
+
+   // rechts oben nach rechts unten
+   for(i = 0; i < max_y-get_grid_char_lines(); i++) {
+     init_grid_font();
+     draw_grid_text(0+i, max_x-(2*get_grid_char_lines()), rand);
+     refresh();
+   }
+
+   // links unten nach rechts unten
+   for(y = 0; y < max_x-get_grid_char_cols(); y++) {
+   init_grid_font();
+   draw_grid_text(max_y-(get_grid_char_cols()-1), 0+y, rand);
+   refresh();
+   }
+
+   //print start & help text
+   attrset(A_BLINK);
+   draw_grid_text(max_y-(max_y/2), tx - strlen(start)/2 * get_grid_char_cols(), start);
+   draw_grid_text(max_y-(max_y/3), tx - strlen(help)/2 * get_grid_char_cols(), help);
+   attrset(A_NORMAL);
+   return;
+}
+*/
+
+//Setup Methode
+/*
+void setup() {
+   const char text[] = "Breakout";
+   const char rand[] = "$";
+   const char help[] = "Press q to quit!";
+   const char start[] = "Press Space to start!";
+   int tx = max_x/2;
+   int ty = max_y/2;
+}
+*/
+

@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++98 -Wall  -rdynamic CMakeFiles/main.dir/main.cpp.o CMakeFiles/main.dir/graphics.cpp.o CMakeFiles/main.dir/scrollarea.cpp.o CMakeFiles/main.dir/gridfont.cpp.o CMakeFiles/main.dir/sound.cpp.o  -o main -lcurses -lform -Wl,-Bstatic -lSDLmain -Wl,-Bdynamic -lSDL -lpthread -lSDL_mixer 
